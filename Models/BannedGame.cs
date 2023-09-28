@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QueryBuilder.Models
+namespace QueryBuilder2.Models
 {
     internal class BannedGame : IClassModel
     {
@@ -14,5 +14,24 @@ namespace QueryBuilder.Models
         public string Country { get; set; }
         public string Details { get; set; }
 
+        public BannedGame ()
+        {
+
+        }
+        public BannedGame(int id, string title, string series, string country, string details)
+        {
+            Id = id;
+            Title = title;
+            Series = series;
+            Country = country;
+            Details = details;
+        }
+
+        public string toString()
+        {
+            string info = "";
+            info = ("ID: " + this.Id + "\n" + "Title: " + this.Title + "\n" + "Series: " + this.Series + "\n" + "Country: " + this.Country + "\n" + "Details: " + this.Details);
+            return info;
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QueryBuilderProject.Models
+namespace QueryBuilder2.Models
 {
     internal class Pokemon : IClassModel
     {
@@ -22,6 +22,33 @@ namespace QueryBuilderProject.Models
         public int SpecialDefense { get; set; }
         public int Speed { get; set; }
         public int Generation { get; set; }
+        public Pokemon ()
+        {
 
+        }
+        public Pokemon(int id, int dexNumber, string name, string form, string type1, string type2, int total, int hP, int attack, int defense, int specialAttack, int specialDefense, int speed, int generation)
+        {
+            Id = id;
+            DexNumber = dexNumber;
+            Name = name;
+            Form = form;
+            Type1 = type1;
+            Type2 = type2;
+            Total = total;
+            HP = hP;
+            Attack = attack;
+            Defense = defense;
+            SpecialAttack = specialAttack;
+            SpecialDefense = specialDefense;
+            Speed = speed;
+            Generation = generation;
+        }
+
+        public string toString()
+        {
+            string info = "";
+            info = ("ID: " + this.Id + "\n" + "DexNumber: " + this.DexNumber + "\n" + "Name: " + this.Name + "\n" + "Form: " + this.Form + "\n" + "Type1: " + this.Type1 + "\n" + "Type2: " + this.Type2 + "\n" + "Total: " + this.Total + "\n" + "HP: " + this.HP + "\n" + "Attack: " + this.Attack + "\n" + "Defense: " + this.Defense + "\n" + "SpecialAttack: " + this.SpecialAttack + "\n" + "SpecialDefense: " + this.SpecialDefense + "\n" + "Speed: " + this.Speed + "\n" + "Generation: " + this.Generation);
+            return info;
+        }
     }
 }

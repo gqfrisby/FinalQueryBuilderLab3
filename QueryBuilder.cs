@@ -1,9 +1,9 @@
-﻿using QueryBuilderProject.Models;
+﻿using QueryBuilder2.Models;
 using Microsoft.Data.Sqlite;
 using System.Reflection;
 using System.Text;
 
-namespace QueryBuilderProject
+namespace QueryBuilder2
 {
     public class QueryBuilder : IDisposable
     {
@@ -26,7 +26,6 @@ namespace QueryBuilderProject
         {
             var command = connection!.CreateCommand();
             command.CommandText = $"SELECT * FROM {typeof(T).Name} where Id = {id}";
-
             var reader = command.ExecuteReader();
 
             T data = new T();
@@ -179,11 +178,11 @@ namespace QueryBuilderProject
             {
                 if (i == values.Count - 1)
                 {
-                    sb2 = sb2 + values[i];
+                    sb3 = sb2 + values[i];
                 }
                 else
                 {
-                    sb2 = sb2 + values[i] + ", ";
+                    sb3 = sb2 + values[i] + ", ";
                 }
             }
             var command = connection.CreateCommand();
