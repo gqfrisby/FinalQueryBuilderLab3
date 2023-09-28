@@ -5,9 +5,62 @@ namespace QueryBuilder2
     {
         static void Main(string[] args)
         {
-            string dbPath = "C:\\Users\\gqfri\\source\\repos\\QueryBuilder2\\Data\\data.db";
+            string dbPath = "C:\\Users\\Gavin Frisby\\Source\\Repos\\QueryBuilder2\\Data\\data.db";
             QueryBuilder qb = new QueryBuilder(dbPath);
             string userChoice = "";
+            List<Pokemon> pokemonList = new List<Pokemon>();
+            List<BannedGame> games1 = new List<BannedGame>();
+
+            int ID = 9999;
+            int DexNumber = 9999;
+            string name = "demo1";
+            string form = "demo1";
+            string type1 = "demo1";
+            string type2 = "demo1";
+            int total = 9999;
+            int HP = 9999;
+            int Attack = 9999;
+            int Defense = 9999;
+            int SpecialAttack = 9999;
+            int SpecialDefense = 9999;
+            int Speed = 9999;
+            int Generation = 9999;
+            Pokemon demo1 = new Pokemon(ID, DexNumber, name, form, type1, type2, total, HP, Attack, Defense, SpecialAttack, SpecialDefense, Speed, Generation);
+            pokemonList.Add(demo1);
+
+            int ID2 = 9999;
+            int DexNumber2 = 9999;
+            string name2 = "demo2";
+            string form2 = "demo2";
+            string type12 = "demo2";
+            string type22 = "demo2";
+            int total2 = 9999;
+            int HP2 = 9999;
+            int Attack2 = 9999;
+            int Defense2 = 9999;
+            int SpecialAttack2 = 9999;
+            int SpecialDefense2 = 9999;
+            int Speed2 = 9999;
+            int Generation2 = 9999;
+            Pokemon demo2 = new Pokemon(ID2, DexNumber2, name2, form2, type12, type22, total2, HP2, Attack2, Defense2, SpecialAttack2, SpecialDefense2, Speed2, Generation2);
+            pokemonList.Add(demo2);
+
+            int ID3 = 9999;
+            string title = "demo1";
+            string series = "demo1";
+            string country = "demo1";
+            string details = "demo1";
+            BannedGame demo3 = new BannedGame(ID3, title, series, country, details);
+            games1.Add(demo3);
+
+            int ID4 = 9999;
+            string title2 = "demo1";
+            string series2 = "demo1";
+            string country2 = "demo1";
+            string details2 = "demo1";
+            BannedGame demo4 = new BannedGame(ID4, title2, series2, country2 , details2);
+            games1.Add(demo4);
+
             do
             {
                 Console.WriteLine("Please Select What you would like to do with the database");
@@ -17,7 +70,8 @@ namespace QueryBuilder2
                 Console.WriteLine("4.) Update");
                 Console.WriteLine("5.) Delete");
                 Console.WriteLine("6.) DeleteAll");
-                Console.WriteLine("7.) Stop");
+                Console.WriteLine("7.) Collection Demonstration");
+                Console.WriteLine("8.) Stop");
                 userChoice = Console.ReadLine();
                 if (userChoice == "1")
                 {
@@ -54,6 +108,7 @@ namespace QueryBuilder2
                         foreach (BannedGame game in games)
                         {
                             Console.WriteLine(game.toString());
+                            Console.WriteLine("----------------------------------------------------");
                         }
 
                     }
@@ -63,6 +118,7 @@ namespace QueryBuilder2
                          foreach (Pokemon mon in pokemon)
                          {
                              Console.WriteLine(mon.toString());
+                            Console.WriteLine("----------------------------------------------------");
                          } 
                     }
                 }
@@ -129,7 +185,7 @@ namespace QueryBuilder2
                         int monGen = Int32.Parse(preParse9);
                         Pokemon mon = new Pokemon(monID, monNumber, monName, monForm, monType1, monType2, monTotal, monHP, monAttack, monDefense, monSAttack, monSDefense, monSpeed, monGen);
                         qb.Create<Pokemon>(mon);
-                        Console.WriteLine("Game has been created");
+                        Console.WriteLine("Pokemon has been created");
                     }
                 }
                 else if (userChoice == "4")
@@ -216,7 +272,7 @@ namespace QueryBuilder2
                         Console.WriteLine("(Current) Details: ");
                         string gameDetails = Console.ReadLine();
                         BannedGame game = new BannedGame(gameID, gameTitle, gameSeries, gameCountry, gameDetails);
-                        qb.Update<BannedGame>(game);
+                        qb.Delete<BannedGame>(game);
                         Console.WriteLine("Game has been updated");
                     }
                     else if(userChoice4 == "Pokemon")
@@ -266,9 +322,31 @@ namespace QueryBuilder2
                 }
                 else if (userChoice == "6")
                 {
-                    //qb.DeleteAll();
+                    Console.WriteLine("Please enter which table you would like to clear (BannedGame or Pokemon): ");
+                    string table1 = Console.ReadLine();
+                    if (table1 == "BannedGame")
+                    {
+                        qb.DeleteAll<BannedGame>();
+                    }
+                    else if (table1 == "Pokemon")
+                    {
+                        qb.DeleteAll<Pokemon>();
+                    }
+                    Console.WriteLine("Table Cleared");
                 }
-            } while (userChoice != "7");
+                else if (userChoice == "7")
+                {
+                    foreach (Pokemon mon in pokemonList)
+                    {
+                        qb.Create<Pokemon>(mon);
+                    }
+                    foreach (BannedGame game in games1)
+                    {
+                        qb.Create<BannedGame>(game);
+                    }
+                    Console.WriteLine("Demo Objects have been added to DataBase");
+                }
+            } while (userChoice != "8");
         }
     }
 }

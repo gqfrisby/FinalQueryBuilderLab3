@@ -110,7 +110,6 @@ namespace QueryBuilder2
             return dataList;
         }
 
-        // TODO: Add the Create method
 
         public void Create<T>(T obj) where T : IClassModel
         {
@@ -147,47 +146,39 @@ namespace QueryBuilder2
             }
 
             // build the insert statement
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb1 = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
 
-            // include commas in between values / names UNLESS you're on the last item
+            // Include commas in between values / names UNLESS you're on the last item
             for (int i = 0; i < values.Count; i++)
             {
-                if (i == values.Count - 1)
+                sb1.Append(names[i]);
+                sb2.Append(values[i]);
+
+                if (i < values.Count - 1)
                 {
-                    sb.Append($"{names[i]} = {values[i]}");
-                }
-                else
-                {
-                    sb.Append($"{names[i]} = {values[i]}, ");
-                }
-            }
-            String sb2 = "";
-            for (int i = 0; i < names.Count; i++)
-            {
-                if (i == names.Count - 1)
-                {
-                    sb2 = sb2 + names[i];
-                }
-                else
-                {
-                    sb2 = sb2 + names[i] + ", ";
+                    sb1.Append(", ");
+                    sb2.Append(", ");
                 }
             }
-            String sb3 = "";
-            for (int i = 0; i < values.Count; i++)
-            {
-                if (i == values.Count - 1)
-                {
-                    sb3 = sb2 + values[i];
-                }
-                else
-                {
-                    sb3 = sb2 + values[i] + ", ";
-                }
-            }
+
             var command = connection.CreateCommand();
-            command.CommandText = $"INSERT INTO {typeof(T).Name} ( " + sb2 + ") " + "VALUES ( " + sb3 + ")";
-            //command.CommandText = $"UPDATE {typeof(T).Name} SET {sb} WHERE Id = {obj.Id}";
+            command.CommandText = $"INSERT INTO {typeof(T).Name} ({sb1}) VALUES ({sb2})";
+            for (int i = 1; i < properties.Length; i++)
+            {
+                property = properties[i];
+                object value = property.GetValue(obj);
+
+                // Handle DateTime and string types
+                if (property.PropertyType == typeof(DateTime))
+                {
+                    command.Parameters.AddWithValue($"@{property.Name}", ((DateTime)value).ToString("yyyy-MM-dd"));
+                }
+                else
+                {
+                    command.Parameters.AddWithValue($"@{property.Name}", value);
+                }
+            }
             var reader = command.ExecuteNonQuery();
         }
         /// <summary>
@@ -258,6 +249,14 @@ namespace QueryBuilder2
             command.CommandText = $"DELETE FROM {typeof(T).Name} WHERE Id = {obj.Id}";
             var reader = command.ExecuteNonQuery();
         }
+
+        public void DeleteAll<T>() where T : IClassModel
+        {
+            var command = connection.CreateCommand();
+            command.CommandText = $"DELETE FROM {typeof(T).Name}";
+            var reader = command.ExecuteNonQuery();
+        }
+
 
         /// <summary>
         /// Closes resources committed to reading SQLite file
